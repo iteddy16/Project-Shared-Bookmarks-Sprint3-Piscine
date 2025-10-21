@@ -1,8 +1,26 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
+    <meta charset="utf-8" />
+    <title>Shared Bookmark</title>
+    <!-- Load the main script as a module -->
     <script type="module" src="script.js"></script>
   </head>
   <body>
+    <header>
+      <h1>Project Shared Bookmark</h1>
+    </header>
+
+    <main>
+      
+      <section aria-labelledby="user-select-heading">
+        <h2 id="user-select-heading">Choose user</h2>
+        <label for="userSelect">User:</label>
+        <select id="userSelect" aria-describedby="userSelectDesc"></select>
+        <div id="userSelectDesc" hidden>Choose a user to view and add bookmarks for them.</div>
+      </section>
+    
+    </main>
+  
   </body>
 </html>
