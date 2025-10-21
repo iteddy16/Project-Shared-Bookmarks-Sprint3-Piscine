@@ -7,9 +7,45 @@
 import { getUserIds } from "./storage.js";
 
 
+
+/**
+ * Add a bookmark object for a given userId.
+ * Ensures data shape: { title, url, description, createdAt }
+ * Returns the updated array of bookmarks for the user.
+ *
+ * @param {string} userId
+ * @param {{title:string,url:string,description:string}} bookmark
+ * @returns {Array} updated bookmarks array
+ */
+export function addBookmarkForUser(userId, bookmark) {
+  if (!userId) throw new Error("userId is required");
+  if (!bookmark || !bookmark.title || !bookmark.url || !bookmark.description) {
+    throw new Error("bookmark must have title, url and description");
+  }
+
+  const existing = getData(userId) || [];
+  const newBookmark = {
+    title: bookmark.title,
+    url: bookmark.url,
+    description: bookmark.description,
+    createdAt: new Date().toISOString()
+  };
+  existing.push(newBookmark);
+  setData(userId, existing);
+  return sortBookmarksDesc(existing);
+}
+
 /* ---------- DOM wiring ---------- */
 
 const userSelect = document.getElementById("userSelect");
+const bookmarksContainer = document.getElementById("bookmarksContainer");
+const bookmarkForm = document.getElementById("bookmarkForm");
+const urlInput = document.getElementById("urlInput");
+const titleInput = document.getElementById("titleInput");
+
+
+
+let currentUser = "";
 
 
 
@@ -31,6 +67,64 @@ function initUserDropdown() {
     userSelect.appendChild(opt);
   });
 }
+
+
+
+
+
+
+
+
+
+
+/** load and show bookmarks for selected user */
+function loadAndShowUserBookmarks(userId) {
+  const data = getData(userId) || [];
+  const sorted = sortBookmarksDesc(data);
+  renderBookmarksList(sorted);
+}
+
+/* Events */
+userSelect.addEventListener("change", (e) => {
+  currentUser = e.target.value;
+  if (!currentUser) {
+    bookmarksContainer.innerHTML = `<p>Please select a user to view bookmarks.</p>`;
+    return;
+  }
+  loadAndShowUserBookmarks(currentUser);
+});
+
+bookmarkForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  if (!currentUser) {
+    // accessible alert: focus to select
+    alert("Please select a user before adding a bookmark.");
+    userSelect.focus();
+    return;
+  }
+  const url = urlInput.value.trim();
+  const title = titleInput.value.trim();
+  const description = descInput.value.trim();
+
+  // Basic validation: HTML required attributes already enforce non-empty, but double-check
+  if (!url || !title || !description) {
+    alert("Please fill in URL, title and description.");
+    return;
+  }
+
+  // Add bookmark using exported function (keeps tests meaningful)
+  try {
+    const updated = addBookmarkForUser(currentUser, { title, url, description });
+    // show updated list
+    renderBookmarksList(updated);
+    // reset form but keep focus on title for quick additional input
+    bookmarkForm.reset();
+    titleInput.focus();
+  } catch (err) {
+    console.error(err);
+    alert("Failed to add bookmark: " + err.message);
+  }
+});
 
 
 /* Initialize on load */
