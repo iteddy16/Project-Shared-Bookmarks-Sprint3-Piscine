@@ -19,6 +19,36 @@
         <select id="userSelect" aria-describedby="userSelectDesc"></select>
         <div id="userSelectDesc" hidden>Choose a user to view and add bookmarks for them.</div>
       </section>
+
+       <section aria-labelledby="bookmarks-heading">
+        <h2 id="bookmarks-heading">Bookmarks</h2>
+        <!-- messages and list -->
+        <div id="bookmarksContainer" aria-live="polite"></div>
+      </section>
+
+      <section aria-labelledby="add-heading">
+        <h2 id="add-heading">Add a new bookmark</h2>
+        <form id="bookmarkForm">
+          <div>
+            <label for="urlInput">URL</label><br/>
+            <input id="urlInput" name="url" type="url" required placeholder="https://example.com" />
+          </div>
+
+          <div>
+            <label for="titleInput">Title</label><br/>
+            <input id="titleInput" name="title" type="text" required placeholder="Title" />
+          </div>
+
+          <div>
+            <label for="descInput">Description</label><br/>
+            <textarea id="descInput" name="description" required placeholder="Short description"></textarea>
+          </div>
+
+          <div>
+            <button id="submitBtn" type="submit">Add Bookmark</button>
+          </div>
+        </form>
+      </section>
     
     </main>
   
