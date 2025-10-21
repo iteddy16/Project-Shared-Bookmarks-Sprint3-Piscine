@@ -6,7 +6,36 @@
 
 import { getUserIds } from "./storage.js";
 
-window.onload = function () {
+
+/* ---------- DOM wiring ---------- */
+
+const userSelect = document.getElementById("userSelect");
+
+
+
+/** render user dropdown */
+
+function initUserDropdown() {
   const users = getUserIds();
-  document.querySelector("body").innerText = `There are ${users.length} users`;
-};
+  // ensure 5 users returned (requirement)
+  userSelect.innerHTML = "";
+  const defaultOption = document.createElement("option");
+  defaultOption.value = "";
+  defaultOption.textContent = "-- select user --";
+  userSelect.appendChild(defaultOption);
+
+  users.forEach((id) => {
+    const opt = document.createElement("option");
+    opt.value = id;
+    opt.textContent = `User ${id}`;
+    userSelect.appendChild(opt);
+  });
+}
+
+
+/* Initialize on load */
+window.addEventListener("DOMContentLoaded", () => {
+  initUserDropdown();
+  // friendly initial message
+  bookmarksContainer.innerHTML = `<p>Please select a user to view bookmarks.</p>`;
+});
