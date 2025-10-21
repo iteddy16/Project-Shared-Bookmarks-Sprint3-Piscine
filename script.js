@@ -6,7 +6,15 @@
 
 import { getUserIds } from "./storage.js";
 
-
+/**
+ * Sort bookmarks in reverse chronological order (newest first) by createdAt ISO string
+ * @param {Array} bookmarks
+ * @returns {Array} new sorted array
+ */
+export function sortBookmarksDesc(bookmarks = []) {
+  // defensive copy & sort
+  return [...bookmarks].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+}
 
 /**
  * Add a bookmark object for a given userId.
@@ -42,12 +50,9 @@ const bookmarksContainer = document.getElementById("bookmarksContainer");
 const bookmarkForm = document.getElementById("bookmarkForm");
 const urlInput = document.getElementById("urlInput");
 const titleInput = document.getElementById("titleInput");
-
-
+const descInput = document.getElementById("descInput");
 
 let currentUser = "";
-
-
 
 /** render user dropdown */
 
@@ -68,14 +73,47 @@ function initUserDropdown() {
   });
 }
 
+/** render bookmarks list for currentUser */
+function renderBookmarksList(bookmarks) {
+  bookmarksContainer.innerHTML = "";
+  if (!bookmarks || bookmarks.length === 0) {
+    const p = document.createElement("p");
+    p.textContent = "No bookmarks found for this user.";
+    bookmarksContainer.appendChild(p);
+    return;
+  }
 
+  const list = document.createElement("div");
+  list.setAttribute("role", "list");
+  bookmarks.forEach((b) => {
+    const item = document.createElement("div");
+    item.setAttribute("role", "listitem");
 
+    const link = document.createElement("a");
+    link.href = b.url;
+    link.textContent = b.title;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
 
+    const titleWrapper = document.createElement("div");
+    titleWrapper.appendChild(link);
 
+    const desc = document.createElement("p");
+    desc.textContent = b.description;
 
+    const ts = document.createElement("div");
+    ts.textContent = `Created: ${new Date(b.createdAt).toLocaleString()}`;
 
+    item.appendChild(titleWrapper);
+    item.appendChild(desc);
+    item.appendChild(ts);
+    list.appendChild(item);
+    // small separator for clarity (no CSS)
+    list.appendChild(document.createElement("hr"));
+  });
 
-
+  bookmarksContainer.appendChild(list);
+}
 
 /** load and show bookmarks for selected user */
 function loadAndShowUserBookmarks(userId) {
