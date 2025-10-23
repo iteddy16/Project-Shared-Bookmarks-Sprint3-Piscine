@@ -5,16 +5,7 @@
 // You can't open the index.html file using a file:// URL.
 
 import { getUserIds, getData, setData } from "./storage.js";
-
-/**
- * Sort bookmarks in reverse chronological order (newest first) by createdAt ISO string
- * @param {Array} bookmarks
- * @returns {Array} new sorted array
- */
-export function sortBookmarksDesc(bookmarks = []) {
-  // defensive copy & sort
-  return [...bookmarks].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-}
+import { sortBookmarksDesc } from "./sort.js";
 
 /**
  * Add a bookmark object for a given userId.
