@@ -41,7 +41,7 @@ A simple web app that records useful links and comes back to them later to check
 ```bash
     git clone https://github.com/iteddy16/Project-Shared-Bookmarks-Sprint3-Piscine
 
-    cd Piscine-Sprint-1-Project-Spaced-Repetition-Tracker
+    cd Project-Shared-Bookmarks-Sprint3-Piscine
 ```
 
 2. Install a simple HTTP server:
@@ -60,5 +60,5 @@ Open the URL displayed in your browser (usually http://localhost:8080)
 
 ## 🌐 Live Demo
 
-[View Live Project on Netlify](#)
+[View Live Project on Netlify](https://ted-bookmark.netlify.app/)
 
